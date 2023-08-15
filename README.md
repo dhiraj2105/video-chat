@@ -1,4 +1,4 @@
-# Video conferencing webapp
+# Video conferencing webapp [ Development Mode ]
 
 This is a simple video conference app built with
 
