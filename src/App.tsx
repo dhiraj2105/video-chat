@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./app/hooks";
 import ThemeSelector from "./components/ThemeSelector";
+import CreateMeeting from "./pages/CreateMeeting";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
         <EuiThemeProvider modify={overrides}>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/create" element={<CreateMeeting />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<Dashboard />} />
           </Routes>
