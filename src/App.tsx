@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "./app/hooks";
 import ThemeSelector from "./components/ThemeSelector";
 import CreateMeeting from "./pages/CreateMeeting";
+import OneOnOneMeeting from "./pages/OneOnOneMeeting";
 
 function App() {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/create" element={<CreateMeeting />} />
+            <Route path="/create1on1" element={<OneOnOneMeeting />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<Dashboard />} />
           </Routes>
