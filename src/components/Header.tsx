@@ -13,6 +13,7 @@ import {
 import { firebaseAuth } from "../utils/FirebaseConfig";
 import { signOut } from "firebase/auth";
 import { changeTheme } from "../app/slices/AuthSlice";
+import { getCreateMeetingBreadCrumbs } from "../utils/breadCrumbs";
 
 function Header() {
   const navigate = useNavigate();
@@ -25,6 +26,13 @@ function Header() {
   const logout = () => {
     signOut(firebaseAuth);
   };
+
+  useEffect(() => {
+    const { pathname } = location;
+    if (pathname === "/create")
+      setbreadCrumbs(getCreateMeetingBreadCrumbs(navigate));
+  }, [location, navigate]);
+
   const invertTheme = () => {
     const theme = localStorage.getItem("zoom-theme");
     localStorage.setItem("zoom-theme", theme === "light" ? "dark" : "light");
