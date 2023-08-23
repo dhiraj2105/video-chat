@@ -3,8 +3,13 @@ import Header from "../components/Header";
 import { EuiFlexGroup, EuiForm } from "@elastic/eui";
 import MeetingNameField from "../components/FormComponents/MeetingNameField";
 import MeetingUsersField from "../components/FormComponents/MeetingUsersField";
+import useFetchUsers from "../hooks/useFetchUsers";
+import useAuth from "../hooks/useAuth";
 
 function OneOnOneMeeting() {
+  useAuth();
+  const [users] = useFetchUsers();
+
   const [meetingName, setMeetingName] = useState("");
 
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -31,7 +36,7 @@ function OneOnOneMeeting() {
           />
           <MeetingUsersField
             label="Invite User"
-            options={user}
+            options={users}
             onChange={onUserChange}
             selectedOptions={selectedUsers}
             singleSelection={{ asPlainText: true }}
