@@ -8,15 +8,24 @@ import useAuth from "../hooks/useAuth";
 import moment from "moment";
 import MeetingDateField from "../components/FormComponents/MeetingDateField";
 import CreateMeetingButtons from "../components/FormComponents/CreateMeetingButtons";
-import { FieldErrorType } from "../utils/Types";
+import { FieldErrorType, UserType } from "../utils/Types";
+import { addDoc } from "firebase/firestore";
+import { meetingsRef } from "../utils/FirebaseConfig";
+import { generateMeetingId } from "../utils/generateMeetingId";
+import { useAppSelector } from "../app/hooks";
+import { useNavigate } from "react-router-dom";
+import useToast from "../hooks/useToast";
 
 function OneOnOneMeeting() {
   useAuth();
   const [users] = useFetchUsers();
+  const [createToast] = useToast();
+  const navigate = useNavigate();
+  const uid = useAppSelector((zoom) => zoom.auth.userInfo?.uid);
 
   const [meetingName, setMeetingName] = useState("");
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState<Array<UserType>>([]);
   const [startDate, setStartDate] = useState(moment());
   const [showErrors, setShowErrors] = useState<{
     meetingName: FieldErrorType;
@@ -47,12 +56,35 @@ function OneOnOneMeeting() {
       clonedShowErrors.meetingName.show = false;
       clonedShowErrors.meetingName.message = [];
     }
+    if (!selectedUsers.length) {
+      clonedShowErrors.meetingUser.show = true;
+      clonedShowErrors.meetingUser.message = ["Please Select User"];
+    } else {
+      clonedShowErrors.meetingUser.show = false;
+      clonedShowErrors.meetingUser.message = [];
+    }
     setShowErrors(clonedShowErrors);
     return errors;
   };
 
-  const createmeeting = () => {
+  const createmeeting = async () => {
     if (!validateForm()) {
+      const meetingId = generateMeetingId();
+      await addDoc(meetingsRef, {
+        createdBy: uid,
+        meetingId,
+        meetingName,
+        meetingType: "1-on-1",
+        invitedUsers: [selectedUsers[0].uid],
+        meetingDate: startDate.format("L"),
+        maxUsers: 1,
+        status: true,
+      });
+      createToast({
+        title: "One on One Meeting Created Successfully",
+        type: "success",
+      });
+      navigate("/");
     }
   };
 
@@ -83,6 +115,8 @@ function OneOnOneMeeting() {
             singleSelection={{ asPlainText: true }}
             isClearable={false}
             placeholder="Select a user"
+            isInvalid={showErrors.meetingUser.show}
+            error={showErrors.meetingUser.message}
           />
           <MeetingDateField selected={startDate} setStartDate={setStartDate} />
           <CreateMeetingButtons createmeeting={createmeeting} />
