@@ -41,7 +41,7 @@ function Dashboard() {
               icon={<EuiImage size="100%" alt="icon" src={dashboard2} />}
               title={"My Meetings"}
               description="View your created meetings"
-              onClick={() => navigate("/create")}
+              onClick={() => navigate("/mymeetings")}
               paddingSize="xl"
             />
           </EuiFlexItem>
@@ -51,7 +51,7 @@ function Dashboard() {
               icon={<EuiImage size="5rem" alt="icon" src={dashboard3} />}
               title={"Meetings"}
               description="View the meetings that you are invited to"
-              onClick={() => navigate("/create")}
+              onClick={() => navigate("/meetings")}
               paddingSize="xl"
             />
           </EuiFlexItem>
