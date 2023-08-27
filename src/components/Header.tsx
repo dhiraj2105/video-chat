@@ -16,6 +16,7 @@ import { changeTheme } from "../app/slices/AuthSlice";
 import {
   getCreateMeetingBreadCrumbs,
   getOneonOneMeetingBreadCrumbs,
+  getVideoConferenceBreadCrumbs,
 } from "../utils/breadCrumbs";
 
 function Header() {
@@ -36,6 +37,8 @@ function Header() {
       setbreadCrumbs(getCreateMeetingBreadCrumbs(navigate));
     else if (pathname === "/create1on1")
       setbreadCrumbs(getOneonOneMeetingBreadCrumbs(navigate));
+    else if (pathname === "/videoconference")
+      setbreadCrumbs(getVideoConferenceBreadCrumbs(navigate));
   }, [location, navigate]);
 
   const invertTheme = () => {
