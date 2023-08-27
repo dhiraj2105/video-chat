@@ -28,3 +28,20 @@ export const getOneonOneMeetingBreadCrumbs = (navigate: NavigateFunction) : Arra
   },
   {text: "Create One on One Meeting"}
 ];
+
+export const getVideoConferenceBreadCrumbs = (navigate: NavigateFunction) : Array<BreadCrumbsType> =>[
+  {
+    text: "Dashboard",
+    href: "/",
+    onclick: () => {
+      navigate("/");
+    },
+  },
+  { text: "Create Meeting" ,
+  href: "/",
+    onclick: () => {
+      navigate("/create");
+    },
+  },
+  {text: "Create Video Conference"}
+];
