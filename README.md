@@ -9,5 +9,3 @@ This is a simple video conference app built with
 ### Redux Toolkit
 
 ### ZEGOCLOUD
-
-// edit
