@@ -3,7 +3,7 @@ import { FieldErrorType, MeetingType, UserType } from "../utils/Types";
 import useAuth from "../hooks/useAuth";
 import useFetchUsers from "../hooks/useFetchUsers";
 import useToast from "../hooks/useToast";
-import { useAppSelector } from "../app/hooks";
+// import { useAppSelector } from "../app/hooks";
 import moment from "moment";
 import { firebaseDB } from "../utils/FirebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
@@ -40,19 +40,10 @@ function EditFlyout({
   const [size, setSize] = useState(1);
   const [meetingType] = useState(meeting.meetingType);
   const [status, setStatus] = useState(false);
-  const [showErrors] = useState<{
-    meetingName: FieldErrorType;
-    meetingUser: FieldErrorType;
-  }>({
-    meetingName: {
-      show: false,
-      message: [],
-    },
-    meetingUser: {
-      show: false,
-      message: [],
-    },
-  });
+
+  const onUserChange = (selectedOptions: Array<UserType>) => {
+    setSelectedUsers(selectedOptions);
+  };
 
   useEffect(() => {
     if (users) {
@@ -65,11 +56,38 @@ function EditFlyout({
       });
       setSelectedUsers(foundUsers);
     }
-  }, [meeting, users]);
+  }, [users, meeting]);
 
-  const onUserChange = (selectedOptions: any) => {
-    setSelectedUsers(selectedOptions);
-  };
+  const [showErrors] = useState<{
+    meetingName: FieldErrorType;
+    meetingUsers: FieldErrorType;
+  }>({
+    meetingName: {
+      show: false,
+      message: [],
+    },
+    meetingUsers: {
+      show: false,
+      message: [],
+    },
+  });
+
+  // useEffect(() => {
+  //   if (users) {
+  //     const foundUsers: Array<UserType> = [];
+  //     meeting.invitiedUsers.forEach((user: string) => {
+  //       const findUser = users.find(
+  //         (tempUser: UserType) => tempUser.uid === user
+  //       );
+  //       if (findUser) foundUsers.push(findUser);
+  //     });
+  //     setSelectedUsers(foundUsers);
+  //   }
+  // }, [users, meeting]);
+
+  // const onUserChange = (selectedOptions: any) => {
+  //   setSelectedUsers(selectedOptions);
+  // };
 
   const editMeeting = async () => {
     const editedMeeting = {
@@ -110,8 +128,8 @@ function EditFlyout({
           ) : (
             <MeetingUsersField
               label="Invite Users"
-              isInvalid={showErrors.meetingUser.show}
-              error={showErrors.meetingUser.message}
+              isInvalid={showErrors.meetingUsers.show}
+              error={showErrors.meetingUsers.message}
               options={users}
               onChange={onUserChange}
               selectedOptions={selectedUsers}
