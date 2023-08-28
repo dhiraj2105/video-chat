@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MeetingType } from "../utils/Types";
 import { getDocs, query, where } from "firebase/firestore";
 import { meetingsRef } from "../utils/FirebaseConfig";
@@ -20,10 +20,10 @@ import EditFlyout from "../components/EditFlyout";
 
 function MyMeetings() {
   useAuth();
-  const [meetings, setMeetings] = useState<any>([]);
+  const [meetings, setMeetings] = useState<Array<MeetingType>>([]);
   const userInfo = useAppSelector((zoom) => zoom.auth.userInfo);
 
-  const getMyMeetings = async () => {
+  const getMyMeetings = useCallback(async () => {
     const firestoreQuery = query(
       meetingsRef,
       where("createdBy", "==", userInfo?.uid)
@@ -39,11 +39,11 @@ function MyMeetings() {
       });
       setMeetings(myMeetings);
     }
-  };
+  }, [userInfo?.uid]);
 
   useEffect(() => {
-    getMyMeetings();
-  }, [userInfo]);
+    if (userInfo) getMyMeetings();
+  }, [userInfo, getMyMeetings]);
 
   const [showEditFlyout, setShowEditFlyout] = useState(false);
   const [EditMeeting, setEditMeeting] = useState<MeetingType>();
